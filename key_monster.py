@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import pickle
+import subprocess
 from slack import slack_message
 
 os.system('clear')
@@ -74,6 +75,8 @@ def fetch(addr,private):
         cprint('No dice\n','red')
 
 def main():
+    subprocess.run(['rm','wallets'],stdout=subprocess.PIPE)
+    subprocess.run(['rm','-r','__pycache__'],stdout=subprocess.PIPE)
     global pairs
     pairs={}
     header()
