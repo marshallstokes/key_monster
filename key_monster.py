@@ -43,6 +43,8 @@ def key_gen():
     addr=keccak.hexdigest()[24:]
     private=priv.to_string().hex()
 
+# todo: optimize by removing file write/read
+
 def store_pairs():
     with open('wallets','ab') as f:
         pickle.dump(pairs,f,protocol=pickle.HIGHEST_PROTOCOL)
@@ -59,7 +61,7 @@ def check_balance():
 def fetch(addr,private):
     api_key=os.environ['ETHERSCAN_API_KEY']
     url='https://api.etherscan.io/api?module=account&action=balance&address=0x{0}&tag=latest&apikey={1}'.format(addr,api_key)
-    time.sleep(0.25)
+    time.sleep(0.25) # conservative delay to stay within allowed [5] QPS limitation of Etherscan API 
     r=requests.get(url)
     data=r.json()
     bal=data['result']
@@ -70,9 +72,9 @@ def fetch(addr,private):
 
     if int(bal) is not 0:
         cprint('JACKPOT!\n','green')
-        slack_message('Jackpot! Balance: {0} Private: {1}'.format(bal,private))
+        slack_message('[*] Sucess! Balance: {0} Private: {1}'.format(bal,private))
     else:
-        cprint('No dice\n','red')
+        cprint('[!] No dice\n','red')
 
 def main():
     subprocess.run(['rm','wallets'],stdout=subprocess.PIPE)
@@ -95,7 +97,7 @@ def main():
     check_balance()
     cprint('Done','green') 
 
-    ### MAIN ###
+### MAIN ###
 if __name__=='__main__':
     main()
 
