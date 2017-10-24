@@ -71,8 +71,8 @@ def fetch(addr,private):
     # win logic
 
     if int(bal) is not 0:
-        cprint('JACKPOT!\n','green')
-        slack_message('[*] Sucess! Balance: {0} Private: {1}'.format(bal,private))
+        cprint('SUCCESS!\n','green')
+        slack_message('[*] Success! Balance: {0} Private: {1}'.format(bal,private))
     else:
         cprint('[!] No dice\n','red')
 
